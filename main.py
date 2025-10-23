@@ -1,4 +1,5 @@
 import pygame
+import os
 
 pygame.init()
 
@@ -6,10 +7,21 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
-font = pygame.font.Font(None, 64)
-text_surf = font.render("Hello, yeahh!!", True, (255, 255, 255))
-text_rect = text_surf.get_rect(center=(640, 260))
+file_path = os.path.join(os.path.dirname(__file__), "random.txt")
+try:
+    with open(file_path, "r", encoding="utf-8") as f:
+        file_text = f.read()
+except Exception as e:
+    file_text = f"Error reading {file_path}:\n{e}"
 
+font = pygame.font.Font(None, 48)
+
+lines = file_text.splitlines() or [""]
+render_surfaces = [font.render(line, True, (255, 255, 255)) for line in lines]
+
+padding_x = 40
+padding_y = 40
+line_spacing = 6
 
 while running:
 
@@ -20,7 +32,10 @@ while running:
     screen.fill("cornflowerblue")
 
 
-    screen.blit(text_surf, text_rect)
+    y = padding_y
+    for surf in render_surfaces:
+        screen.blit(surf, (padding_x, y))
+        y += surf.get_height() + line_spacing
     
 
     pygame.display.flip()

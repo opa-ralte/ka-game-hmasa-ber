@@ -14,14 +14,12 @@ font = pygame.font.Font(None, 50)
 title_surf = font.render("tilte", True, (200, 50, 225))
 title_rect = title_surf.get_frect(center=(500, 500))
 
-class Entity(pygame.sprite.Sprite):
-    def __init__(self, type, name, position, direction, speed):
+class Snake(pygame.sprite.Sprite):
+    def __init__(self, name, position, direction):
         pygame.sprite.Sprite.__init__(self)
-        self.type = type
         self.name = name
         self.position = position
         self.direction = direction
-        self.speed = speed
 
     def update():
         pass

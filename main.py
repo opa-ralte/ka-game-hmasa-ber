@@ -6,7 +6,10 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
-random = pygame.font.Font(filename="random.txt")
+font = pygame.font.Font(None, 64)
+text_surf = font.render("Hello, yeahh!!", True, (255, 255, 255))
+text_rect = text_surf.get_rect(center=(640, 260))
+
 
 while running:
 
@@ -16,8 +19,9 @@ while running:
 
     screen.fill("cornflowerblue")
 
-    # I wanna draw a line
-    pygame.draw.line(screen, (200, 0, 0), (100, 100), (500, 500), 50)
+
+    screen.blit(text_surf, text_rect)
+    
 
     pygame.display.flip()
 

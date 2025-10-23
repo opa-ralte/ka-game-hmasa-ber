@@ -7,7 +7,7 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
-file_path = os.path.join(os.path.dirname(__file__), "random.txt")
+file_path = os.path.join(os.path.dirname(__file__), "assets", "menu", "title.txt")
 try:
     with open(file_path, "r", encoding="utf-8") as f:
         file_text = f.read()

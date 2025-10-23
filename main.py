@@ -3,7 +3,10 @@ import os
 
 pygame.init()
 
-screen = pygame.display.set_mode((1280, 720))
+ORIGINAL_RES = (1280, 720)
+
+screen = pygame.display.set_mode(ORIGINAL_RES)
+pygame.SCALED
 clock = pygame.time.Clock()
 running = True
 
@@ -22,6 +25,8 @@ render_surfaces = [font.render(line, True, (255, 255, 255)) for line in lines]
 padding_x = 40
 padding_y = 40
 line_spacing = 6
+
+print(pygame.font.get_fonts())
 
 while running:
 

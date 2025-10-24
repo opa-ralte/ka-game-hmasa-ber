@@ -39,6 +39,7 @@ class Grid():
 grid = Grid(COLS, ROWS, TILE_SIZE)
 
 x, y = ORIGINAL_RES[0]//2, ORIGINAL_RES[1]//2
+last_movement = (x, y)
 
 while running:
 
@@ -52,16 +53,30 @@ while running:
 
     pygame.draw.circle(screen, (255, 161, 246), (x, y), 20, 0)
 
+    # I want to sustain the last movement
+    if last_movement == (0, -1):
+        y -= TILE_SIZE
+    elif last_movement == (0, 1):
+        y += TILE_SIZE
+    elif last_movement == (1, 0):
+        x += TILE_SIZE
+    elif last_movement == (-1, 0):
+        x -= TILE_SIZE
+    pygame.time.delay(200)
+
     keys = pygame.key.get_just_pressed()
     if keys[pygame.K_UP]:
         y-=TILE_SIZE
+        last_movement = (0, -1)
     elif keys[pygame.K_DOWN]:
         y+=TILE_SIZE
+        last_movement = (0, 1)
     elif keys[pygame.K_RIGHT]:
         x+=TILE_SIZE
+        last_movement = (1, 0)
     elif keys[pygame.K_LEFT]:
         x-=TILE_SIZE
-
+        last_movement = (-1, 0)
 
     pygame.display.flip()
     dt = clock.tick(60) / 1000

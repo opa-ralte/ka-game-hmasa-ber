@@ -3,22 +3,22 @@ import os
 
 pygame.init()
 
-ORIGINAL_RES = (720, 720)
+ORIGINAL_RES = (480, 480)
 
-screen = pygame.display.set_mode(ORIGINAL_RES)
+screen = pygame.display.set_mode(ORIGINAL_RES, pygame.SCALED)
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
 font = pygame.font.Font(None, 50)
-title_surf = font.render("tilte", True, (0, 0, 0))
-title_rect = title_surf.get_frect(center=(360, 40))
+title_surf = font.render("chawngkawr game yeahhh!!!", True, (150, 0, 100, 0.6))
+title_rect = title_surf.get_frect(center=(ORIGINAL_RES[0]//2, 30))
 
 TILE_SIZE = 40
 COLS = ORIGINAL_RES[0] // TILE_SIZE
 ROWS = ORIGINAL_RES[1] // TILE_SIZE
 
-class Grid:
+class Grid():
     def __init__(self, cols, rows, tile_size):
         self.cols = cols
         self.rows = rows
@@ -29,30 +29,42 @@ class Grid:
         return x * self.tile_size, y * self.tile_size
     
     def draw(self, surf, color=(50, 50, 50)):
-        for x in range(self.cols + 1):
+        for x in range(1, self.cols + 1):
             px = x * self.tile_size
             pygame.draw.line(surf, color, (px, 0), (px, self.rows*self.tile_size))
-        for y in range(self.rows + 1):
+        for y in range(1, self.rows + 1):
             py = y * self.tile_size
             pygame.draw.line(surf, color, (0, py), (self.cols*self.tile_size, py))
 
 grid = Grid(COLS, ROWS, TILE_SIZE)
 
+x, y = ORIGINAL_RES[0]//2, ORIGINAL_RES[1]//2
 
 while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            running = False 
 
     screen.fill("cornflowerblue")
-
     grid.draw(screen)
-
     screen.blit(title_surf, title_rect)
 
-    pygame.display.flip()
+    pygame.draw.circle(screen, (255, 161, 246), (x, y), 20, 0)
 
+    keys = pygame.key.get_just_pressed()
+    if keys[pygame.K_UP]:
+        y-=TILE_SIZE
+    elif keys[pygame.K_DOWN]:
+        y+=TILE_SIZE
+    elif keys[pygame.K_RIGHT]:
+        x+=TILE_SIZE
+    elif keys[pygame.K_LEFT]:
+        x-=TILE_SIZE
+
+
+    pygame.display.flip()
     dt = clock.tick(60) / 1000
 
 pygame.quit()
+

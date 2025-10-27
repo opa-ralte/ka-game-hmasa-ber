@@ -3,15 +3,16 @@ import os
 
 pygame.init()
 
-ORIGINAL_RES = (480, 480)
-
+ORIGINAL_RES = (560, 560)
+font_path = os.path.join("assets", "fonts", "GohuFont14NerdFont-Regular.ttf")
+pygame.display.set_caption("chawngkawr game a ni hrih...")
 screen = pygame.display.set_mode(ORIGINAL_RES, pygame.SCALED)
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
-font = pygame.font.Font(os.path.join("assets", "fonts", "GohuFont14NerdFont-Regular.ttf"), 30)
-title_surf = font.render("chawngkawr game yeahhh!!!", True, (255,215,0))
+font = pygame.font.Font(font_path, 30)
+title_surf = font.render("", True, (255,215,0))
 title_rect = title_surf.get_frect(center=(ORIGINAL_RES[0]//2, 30))
 
 TILE_SIZE = 40
@@ -44,31 +45,32 @@ class Ball():
         self.x = x
         self.y = y
         self.dt = dt
+        self.travel = TILE_SIZE
 
     def update(self):
         keys = pygame.key.get_just_pressed()
         match self.which_player:
             case 1:
                 if keys[pygame.K_w]:
-                    self.y-=TILE_SIZE/2 + self.dt
+                    self.y-=self.travel + self.dt
                 elif keys[pygame.K_s]:
-                    self.y+=TILE_SIZE/2 + self.dt  
+                    self.y+=self.travel + self.dt  
                 elif keys[pygame.K_a]:
-                    self.x-=TILE_SIZE/2 + self.dt      
+                    self.x-=self.travel + self.dt      
                 elif keys[pygame.K_d]:
-                    self.x+=TILE_SIZE/2 + self.dt
+                    self.x+=self.travel + self.dt
             case 2:
                 if keys[pygame.K_i]:
-                    self.y-=TILE_SIZE/2 + self.dt
+                    self.y-=self.travel + self.dt
                 elif keys[pygame.K_k]:
-                    self.y+=TILE_SIZE/2 + self.dt  
+                    self.y+=self.travel + self.dt  
                 elif keys[pygame.K_j]:
-                    self.x-=TILE_SIZE/2 + self.dt     
+                    self.x-=self.travel + self.dt     
                 elif keys[pygame.K_l]:
-                    self.x+=TILE_SIZE/2 + self.dt
+                    self.x+=self.travel + self.dt
                 
     def draw(self):
-        pygame.draw.circle(self.screen, self.color, (self.x, self.y), 20)
+        pygame.draw.circle(self.screen, self.color, (self.x, self.y), 13)
 
 grid = Grid(COLS, ROWS, TILE_SIZE)
 

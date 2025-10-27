@@ -37,42 +37,43 @@ class Grid():
             pygame.draw.line(surf, color, (0, py), (self.cols*self.tile_size, py))
 
 class Ball():
-    def __init__(self, which_player, screen, color, x, y):
+    def __init__(self, which_player, screen, color, x, y, dt):
         self.which_player = which_player
         self.screen = screen
         self.color = color
         self.x = x
         self.y = y
+        self.dt = dt
 
     def update(self):
         keys = pygame.key.get_just_pressed()
         match self.which_player:
             case 1:
                 if keys[pygame.K_w]:
-                    self.y-=TILE_SIZE/2
+                    self.y-=TILE_SIZE/2 + self.dt
                 elif keys[pygame.K_s]:
-                    self.y+=TILE_SIZE/2   
+                    self.y+=TILE_SIZE/2 + self.dt  
                 elif keys[pygame.K_a]:
-                    self.x-=TILE_SIZE/2       
+                    self.x-=TILE_SIZE/2 + self.dt      
                 elif keys[pygame.K_d]:
-                    self.x+=TILE_SIZE/2
+                    self.x+=TILE_SIZE/2 + self.dt
             case 2:
                 if keys[pygame.K_i]:
-                    self.y-=TILE_SIZE/2
+                    self.y-=TILE_SIZE/2 + self.dt
                 elif keys[pygame.K_k]:
-                    self.y+=TILE_SIZE/2   
+                    self.y+=TILE_SIZE/2 + self.dt  
                 elif keys[pygame.K_j]:
-                    self.x-=TILE_SIZE/2       
+                    self.x-=TILE_SIZE/2 + self.dt     
                 elif keys[pygame.K_l]:
-                    self.x+=TILE_SIZE/2
+                    self.x+=TILE_SIZE/2 + self.dt
                 
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), 20)
 
 grid = Grid(COLS, ROWS, TILE_SIZE)
 
-ball1 = Ball(1, screen, (100, 0, 0), 100, 100)
-ball2 = Ball(2, screen, (0, 0, 100), 300, 300)
+ball1 = Ball(1, screen, (100, 0, 0), 100, 100, dt)
+ball2 = Ball(2, screen, (0, 0, 100), 300, 300, dt)
 
 while running:
 

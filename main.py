@@ -37,7 +37,8 @@ class Grid():
             pygame.draw.line(surf, color, (0, py), (self.cols*self.tile_size, py))
 
 class Ball():
-    def __init__(self, screen, color, x, y):
+    def __init__(self, which_player, screen, color, x, y):
+        self.which_player = which_player
         self.screen = screen
         self.color = color
         self.x = x
@@ -45,20 +46,33 @@ class Ball():
 
     def update(self):
         keys = pygame.key.get_just_pressed()
-        if keys[pygame.K_w]:
-            self.y-=TILE_SIZE/2
-        elif keys[pygame.K_s]:
-            self.y+=TILE_SIZE/2   
-        elif keys[pygame.K_a]:
-            self.x-=TILE_SIZE/2       
-        elif keys[pygame.K_d]:
-            self.x+=TILE_SIZE/2
+        match self.which_player:
+            case 1:
+                if keys[pygame.K_w]:
+                    self.y-=TILE_SIZE/2
+                elif keys[pygame.K_s]:
+                    self.y+=TILE_SIZE/2   
+                elif keys[pygame.K_a]:
+                    self.x-=TILE_SIZE/2       
+                elif keys[pygame.K_d]:
+                    self.x+=TILE_SIZE/2
+            case 2:
+                if keys[pygame.K_i]:
+                    self.y-=TILE_SIZE/2
+                elif keys[pygame.K_k]:
+                    self.y+=TILE_SIZE/2   
+                elif keys[pygame.K_j]:
+                    self.x-=TILE_SIZE/2       
+                elif keys[pygame.K_l]:
+                    self.x+=TILE_SIZE/2
+                
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), 20)
 
 grid = Grid(COLS, ROWS, TILE_SIZE)
 
-ball = Ball(screen, (100, 0, 0), 100, 100)
+ball1 = Ball(1, screen, (100, 0, 0), 100, 100)
+ball2 = Ball(2, screen, (0, 0, 100), 300, 300)
 
 while running:
 
@@ -70,8 +84,11 @@ while running:
     grid.draw(screen)
     screen.blit(title_surf, title_rect)
        
-    ball.update()
-    ball.draw()
+    ball1.update()
+    ball2.update()
+
+    ball1.draw()
+    ball2.draw()
     
     pygame.display.flip()
     dt = clock.tick(60) / 1000

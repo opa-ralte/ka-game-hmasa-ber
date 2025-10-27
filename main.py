@@ -19,6 +19,21 @@ TILE_SIZE = 40
 COLS = ORIGINAL_RES[0] // TILE_SIZE
 ROWS = ORIGINAL_RES[1] // TILE_SIZE
 
+PATTERN =    ("00000000000000"
+              "01111101111110"
+              "01101111110110"
+              "01111110111110"
+              "01111111011110"
+              "01101111011110"
+              "01101011111110"
+              "01011111110110"
+              "01111101111110"
+              "01011111101110"
+              "01111111111100"
+              "01110111101110"
+              "01111111110110"
+              "00000000000000")
+
 class Grid():
     def __init__(self, cols, rows, tile_size):
         self.cols = cols
@@ -72,10 +87,32 @@ class Ball():
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), 13)
 
-grid = Grid(COLS, ROWS, TILE_SIZE)
+class Box():
+    def __init__(self, pattern, screen, x, y, dt):
+        self.pattern = pattern
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.dt = dt
+        self.width = 14
+        self.height = len(pattern) // self.width
+    def draw(self):
+        for i, char in enumerate(self.pattern):
+            if char == '1':
+                col = i % self.width
+                row = i // self.width
 
-ball1 = Ball(1, screen, (100, 0, 0), 100, 100, dt)
-ball2 = Ball(2, screen, (0, 0, 100), 300, 300, dt)
+                px = self.x + col * TILE_SIZE
+                py = self.y + row * TILE_SIZE
+
+                pygame.draw.rect(self.screen, (255, 182, 193), (px, py, TILE_SIZE, TILE_SIZE))
+
+
+grid = Grid(COLS, ROWS, TILE_SIZE)
+box = Box(PATTERN, screen, 0, 0, dt)
+
+ball1 = Ball(1, screen, (4, 57, 21), 100, 100, dt)
+ball2 = Ball(2, screen, (255, 157, 0), 300, 300, dt)
 
 while running:
 
@@ -85,6 +122,9 @@ while running:
 
     screen.fill("cornflowerblue")
     grid.draw(screen)
+
+    box.draw()
+
     screen.blit(title_surf, title_rect)
        
     ball1.update()

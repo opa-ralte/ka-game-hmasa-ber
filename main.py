@@ -10,8 +10,8 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-font = pygame.font.Font(None, 50)
-title_surf = font.render("chawngkawr game yeahhh!!!", True, (150, 0, 100, 0.6))
+font = pygame.font.Font(os.path.join("assets", "fonts", "GohuFont14NerdFont-Regular.ttf"), 30)
+title_surf = font.render("chawngkawr game yeahhh!!!", True, (255,215,0))
 title_rect = title_surf.get_frect(center=(ORIGINAL_RES[0]//2, 30))
 
 TILE_SIZE = 40

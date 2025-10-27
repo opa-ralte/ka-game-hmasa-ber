@@ -36,16 +36,29 @@ class Grid():
             py = y * self.tile_size
             pygame.draw.line(surf, color, (0, py), (self.cols*self.tile_size, py))
 
-class Snake():
-    def __init__():
-        pass
-    def update():
-        pass
+class Ball():
+    def __init__(self, screen, color, x, y):
+        self.screen = screen
+        self.color = color
+        self.x = x
+        self.y = y
+
+    def update(self):
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_w]:
+            self.y-=TILE_SIZE/2
+        elif keys[pygame.K_s]:
+            self.y+=TILE_SIZE/2   
+        elif keys[pygame.K_a]:
+            self.x-=TILE_SIZE/2       
+        elif keys[pygame.K_d]:
+            self.x+=TILE_SIZE/2
+    def draw(self):
+        pygame.draw.circle(self.screen, self.color, (self.x, self.y), 20)
 
 grid = Grid(COLS, ROWS, TILE_SIZE)
 
-x, y = ORIGINAL_RES[0]//2, ORIGINAL_RES[1]//2
-last_movement = (x, y)
+ball = Ball(screen, (100, 0, 0), 100, 100)
 
 while running:
 
@@ -56,26 +69,10 @@ while running:
     screen.fill("cornflowerblue")
     grid.draw(screen)
     screen.blit(title_surf, title_rect)
-
-    pygame.draw.circle(screen, (255, 161, 246), (x, y), 20, 0)
-
-    pygame.time.delay(100)
-
-    keys = pygame.key.get_just_pressed()
-
-    if keys[pygame.K_w]:
-        y-=TILE_SIZE
-        
-    elif keys[pygame.K_s]:
-        y+=TILE_SIZE
        
-    elif keys[pygame.K_a]:
-        x-=TILE_SIZE
-       
-    elif keys[pygame.K_d]:
-        x+=TILE_SIZE
-       
-
+    ball.update()
+    ball.draw()
+    
     pygame.display.flip()
     dt = clock.tick(60) / 1000
 

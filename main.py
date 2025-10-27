@@ -36,6 +36,12 @@ class Grid():
             py = y * self.tile_size
             pygame.draw.line(surf, color, (0, py), (self.cols*self.tile_size, py))
 
+class Snake():
+    def __init__():
+        pass
+    def update():
+        pass
+
 grid = Grid(COLS, ROWS, TILE_SIZE)
 
 x, y = ORIGINAL_RES[0]//2, ORIGINAL_RES[1]//2
@@ -53,30 +59,22 @@ while running:
 
     pygame.draw.circle(screen, (255, 161, 246), (x, y), 20, 0)
 
-    # I want to sustain the last movement
-    if last_movement == (0, -1):
-        y -= TILE_SIZE
-    elif last_movement == (0, 1):
-        y += TILE_SIZE
-    elif last_movement == (1, 0):
-        x += TILE_SIZE
-    elif last_movement == (-1, 0):
-        x -= TILE_SIZE
-    pygame.time.delay(200)
+    pygame.time.delay(100)
 
     keys = pygame.key.get_just_pressed()
-    if keys[pygame.K_UP]:
+
+    if keys[pygame.K_w]:
         y-=TILE_SIZE
-        last_movement = (0, -1)
-    elif keys[pygame.K_DOWN]:
+        
+    elif keys[pygame.K_s]:
         y+=TILE_SIZE
-        last_movement = (0, 1)
-    elif keys[pygame.K_RIGHT]:
-        x+=TILE_SIZE
-        last_movement = (1, 0)
-    elif keys[pygame.K_LEFT]:
+       
+    elif keys[pygame.K_a]:
         x-=TILE_SIZE
-        last_movement = (-1, 0)
+       
+    elif keys[pygame.K_d]:
+        x+=TILE_SIZE
+       
 
     pygame.display.flip()
     dt = clock.tick(60) / 1000

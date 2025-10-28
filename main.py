@@ -53,7 +53,7 @@ class Grid():
             pygame.draw.line(surf, color, (0, py), (self.cols*self.tile_size, py))
 
 class Ball():
-    def __init__(self, which_player, screen, color, x, y, dt):
+    def __init__(self, which_player, screen, color, x, y, dt, box):
         self.which_player = which_player
         self.screen = screen
         self.color = color
@@ -61,28 +61,43 @@ class Ball():
         self.y = y
         self.dt = dt
         self.travel = TILE_SIZE
+        self.box = box
+
+    def can_move_to(self, new_x, new_y):
+        """Check if the ball can move to the new position"""
+        grid_x = new_x // TILE_SIZE
+        grid_y = new_y // TILE_SIZE
+        return not self.box.is_wall(grid_x, grid_y)
 
     def update(self):
         keys = pygame.key.get_just_pressed()
+        new_x, new_y = self.x, self.y
+        
         match self.which_player:
             case 1:
                 if keys[pygame.K_w]:
-                    self.y-=self.travel + self.dt
+                    new_y = self.y - self.travel
                 elif keys[pygame.K_s]:
-                    self.y+=self.travel + self.dt  
+                    new_y = self.y + self.travel
                 elif keys[pygame.K_a]:
-                    self.x-=self.travel + self.dt      
+                    new_x = self.x - self.travel
                 elif keys[pygame.K_d]:
-                    self.x+=self.travel + self.dt
+                    new_x = self.x + self.travel
             case 2:
                 if keys[pygame.K_i]:
-                    self.y-=self.travel + self.dt
+                    new_y = self.y - self.travel
                 elif keys[pygame.K_k]:
-                    self.y+=self.travel + self.dt  
+                    new_y = self.y + self.travel
                 elif keys[pygame.K_j]:
-                    self.x-=self.travel + self.dt     
+                    new_x = self.x - self.travel
                 elif keys[pygame.K_l]:
-                    self.x+=self.travel + self.dt
+                    new_x = self.x + self.travel
+        
+        # Only move if the new position is valid
+        if new_x != self.x or new_y != self.y:
+            if self.can_move_to(new_x, new_y):
+                self.x = new_x
+                self.y = new_y
                 
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), 13)
@@ -96,6 +111,14 @@ class Box():
         self.dt = dt
         self.width = 14
         self.height = len(pattern) // self.width
+    
+    def is_wall(self, grid_x, grid_y):
+        """Check if a grid position contains a wall"""
+        if grid_x < 0 or grid_x >= self.width or grid_y < 0 or grid_y >= self.height:
+            return True
+        index = grid_y * self.width + grid_x
+        return self.pattern[index] == '0'
+    
     def draw(self):
         for i, char in enumerate(self.pattern):
             if char == '1':
@@ -111,8 +134,8 @@ class Box():
 grid = Grid(COLS, ROWS, TILE_SIZE)
 box = Box(PATTERN, screen, 0, 0, dt)
 
-ball1 = Ball(1, screen, (4, 57, 21), 100, 100, dt)
-ball2 = Ball(2, screen, (255, 157, 0), 300, 300, dt)
+ball1 = Ball(1, screen, (4, 57, 21), 100, 100, dt, box)
+ball2 = Ball(2, screen, (255, 157, 0), 300, 300, dt, box)
 
 while running:
 
@@ -120,16 +143,16 @@ while running:
         if event.type == pygame.QUIT:
             running = False 
 
-    screen.fill("cornflowerblue")
-    grid.draw(screen)
-
-    box.draw()
-
-    screen.blit(title_surf, title_rect)
-       
     ball1.update()
     ball2.update()
+    screen.fill("cornflowerblue")
 
+
+       
+
+    grid.draw(screen)
+    box.draw()
+    screen.blit(title_surf, title_rect)
     ball1.draw()
     ball2.draw()
     

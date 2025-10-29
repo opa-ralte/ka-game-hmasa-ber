@@ -34,6 +34,9 @@ PATTERN =    ("00000000000000"
               "01111111110110"
               "00000000000000")
 
+# chilli explosion time in milli seconds
+CHILLI_EXPLOSION_TIME = 3000
+
 class Grid():
     def __init__(self, cols, rows, tile_size):
         self.cols = cols
@@ -107,6 +110,7 @@ class Ball():
                 self.rect.centery = new_y
     def draw(self):
         self.screen.blit(self.image, self.rect)
+
 class Box():
     def __init__(self, pattern, screen, x, y, dt):
         self.pattern = pattern
@@ -134,6 +138,19 @@ class Box():
                 py = self.y + row * TILE_SIZE
 
                 pygame.draw.rect(self.screen, (255, 182, 193), (px, py, TILE_SIZE, TILE_SIZE))
+
+class Chilli():
+    def __init__(self, which_player, screen, color, x, y, dt, image_path=None):
+        self.which_player = which_player
+        self.screen = screen
+        self.color = color
+        self.dt = dt
+        self.timer = CHILLI_EXPLOSION_TIME
+        self.image = pygame.image.load(image_path).convert_alpha()
+        # scale to tile size if needed
+        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
+        self.rect = self.image.get_rect(center=(x, y))
+    
 
 
 grid = Grid(COLS, ROWS, TILE_SIZE)
